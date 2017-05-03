@@ -49,6 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'welcome';
+
+
+/*$route['default_controller'] = 'belajar';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+*/ 
+//$route['belajar/(:any)'] = 'view/$1';
+//$route['belajar'] = 'belajar';
+//$route['(:any)'] = 'belajar/view/$1';
+$route['default_controller'] = 'page';
+$route['pages/secure-shell-server/continent/(:any)'] = 'page/continent/$1';
+$route['page/secure-shell-server/continent/(:any)/(:any)'] = 'create/ssh/$1/$2';
