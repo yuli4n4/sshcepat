@@ -31,8 +31,8 @@ class WebApi extends CI_Model {
 
         }
 	public function get_ssh($id) {
-                 $query = $this->db->get_where('server', array('Cid' => $id));
-                 return $query->result_array();
+		$query = $this->db->get_where('server', array('Location' => $id));
+                return $query->result_array();
 
         }
 
