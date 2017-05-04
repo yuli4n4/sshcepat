@@ -30,11 +30,11 @@
                         		</div>
 					<div class="media-body" style="height:120px;">
 						Available Country: <br/>
-							<?php foreach($this->WebApi->get_country($ok['Cid']) as $data):?>
+							<?php foreach($this->WebApi->get_location($ok['Cid']) as $data):?>
 								<?php echo '- '.$data['Country']. '<br/>'; ?>
 							<?php endforeach; ?>
 					</div>
-					<a class="btn btn-danger" href="<?php echo site_url('pages/secure-shell-server/continent/').$ok['Cid']?>">Select In <?php echo $ok['Name'];?></a>
+					<a class="btn btn-danger" href="<?php echo site_url('page/secure-shell-server/continent/').$ok['Cid']?>">Select In <?php echo $ok['Name'];?></a>
 				</div>
 			</div>
 			<?php endforeach; ?>
