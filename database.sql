@@ -80,7 +80,7 @@ CREATE TABLE `server` (
   `Location` varchar(20) DEFAULT NULL,
   `OpenSSH` varchar(20) NOT NULL DEFAULT '22',
   `Dropbear` varchar(20) NOT NULL DEFAULT '443',
-  `Cid` varchar(5) DEFAULT NULL,
+  `Cid` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -104,4 +104,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-04 10:35:15
+-- Dump completed on 2017-05-04 10:39:30
