@@ -23,38 +23,33 @@ class Page extends CI_Controller {
 		$this->load->model('WebApi');
 		$this->load->helper('url_helper');
 	}
-	public function index()
-	{
-		$continent['benua'] = $this->WebApi->get_continent();
-
-		$this->load->view('bootstrap/header', $this->setProp());
-		$this->load->view('index', $continent);
-		$this->load->view('bootstrap/footer');
-	}
-	public function setProp()
+	private function set_view($file, $init)
 	{
                 $data['title'] = 'Free SSH Account';
                 $data['brand'] = 'YOURSITE';
-                return $data;
+
+		$this->load->view('bootstrap/header', $data);
+                $this->load->view($file, $init);
+                $this->load->view('bootstrap/footer');
 	}
+	public function index()
+        {
+                $index['benua'] = $this->WebApi->get_continent();
+                $this->set_view('index', $index);
+        }
 	public function get_location($benua)
 	{
-		$continent['benua'] = $this->WebApi->get_location($benua);
-
-		$this->load->view('bootstrap/header', $this->setProp());
-		$this->load->view('country', $continent);
-                $this->load->view('bootstrap/footer');
+		$country['benua'] = $this->WebApi->get_location($benua);
+		$this->set_view('country', $country);
 	}
 	public function get_hostname($negara) {
-                $data['server']= $this->WebApi->get_hostname($negara);
+                $hostname['server']= $this->WebApi->get_hostname($negara);
 
-		for ($i=-1; $i<count($data['server']); $i++) { $host = $i; }
+		for ($i=-1; $i<count($hostname['server']); $i++) { $host = $i; }
                 if ($host === -1 ) {
-			$data['server'] = $this->WebApi->get_hostname('Singapore');
+			$hostname['server'] = $this->WebApi->get_hostname('Singapore');
 		}
-                $this->load->view('bootstrap/header', $this->setProp());
-                $this->load->view('hostname', $data);
-                $this->load->view('bootstrap/footer');
+                $this->set_view('hostname', $hostname);
         }
         public function set_hostname($id) {
 		$data['ssh']= $this->WebApi->get_hostname('', $id);
