@@ -1,4 +1,6 @@
 <?php
+if ( ! defined('BASEPATH'))
+	exit('No direct script access allowed');
 /*
  * Copyright (c) 2006-2017 Adipati Arya <jawircodes@gmail.com>,
  * 2006-2017 http://sshcepat.com
@@ -16,6 +18,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 class Page extends CI_Controller {
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -39,21 +42,33 @@ class Page extends CI_Controller {
         }
 	public function get_location($benua)
 	{
-		$country['benua'] = $this->WebApi->get_location($benua);
-		$this->set_view('country', $country);
-	}
-	public function get_hostname($negara) {
-                $hostname['server']= $this->WebApi->get_hostname($negara);
+		$isValidLocation = false;
 
-		for ($i=-1; $i<count($hostname['server']); $i++) { $host = $i; }
-                if ($host === -1 ) {
-			$hostname['server'] = $this->WebApi->get_hostname('Singapore');
+		$data['benua'] = $this->WebApi->get_location($benua);
+		foreach ($data['benua'] as $row) { $isValidLocation = true; break; }
+
+		if ( ! $isValidLocation )
+		{
+			show_404();
 		}
-                $this->set_view('hostname', $hostname);
-        }
-        public function set_hostname($id) {
-		$data['ssh']= $this->WebApi->get_hostname('', $id);
+		$this->set_view('country', $data);
+	}
+	public function get_hostname($negara)
+	{
+		$isHostAlready = false;
 
-                $this->load->view('create', $data);
+                $data['server'] = $this->WebApi->get_hostname($negara);
+		foreach ($data['server'] as $row) { $isHostAlready = true; break; }
+
+		if (! $isHostAlready )
+		{
+			$data['server'] = $this->WebApi->get_hostname('Singapore');
+		}
+                $this->set_view('hostname', $data);
+        }
+        public function set_hostname($id)
+	{
+		$create['ssh']= $this->WebApi->get_hostname('', $id);
+		$this->set_view('create', $create);
         }
 }

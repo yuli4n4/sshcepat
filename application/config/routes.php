@@ -62,3 +62,4 @@ $route['default_controller'] = 'page';
 $route['page/secure-shell-server/continent/(:any)'] = 'page/get_location/$1';
 $route['page/secure-shell-server/continent/(:any)/(:any)'] = 'page/get_hostname/$2';
 $route['page/secure-shell-server/continent/(:any)/(:any)/(:any)/(:any)'] = 'page/set_hostname/$4';
+$route['page/secure-shell-server/create'] = 'ajax/ajax_post';

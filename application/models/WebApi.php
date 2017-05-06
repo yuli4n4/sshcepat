@@ -30,7 +30,7 @@ class WebApi extends CI_Model {
 			return $query->result_array();
 		}
 		$query = $this->db->get_where('continent', array('Cid' => $cid));
-		return $query->result_array();
+		return  $query->result_array();
 	}
 	public function get_location($cid) {
                  $query = $this->db->get_where('country', array('Cid' => $cid));
