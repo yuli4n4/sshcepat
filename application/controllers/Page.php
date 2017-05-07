@@ -26,7 +26,7 @@ class Page extends CI_Controller {
 		$this->load->model('WebApi');
 		$this->load->helper('url_helper');
 	}
-	private function set_view($file, $init)
+	private function _set_view($file, $init)
 	{
 		foreach ($this->WebApi->get_site_details() as $row) {
 			$data['author'] = $row['author'];
@@ -43,10 +43,12 @@ class Page extends CI_Controller {
 	public function index()
         {
                 $index['benua'] = $this->WebApi->get_continent();
-                $this->set_view('index', $index);
+                $this->_set_view('index', $index);
         }
-	public function get_location($benua)
+	public function get_location($benua = FALSE)
 	{
+		if ($benua === FALSE) { show_404(); }
+
 		$isValidLocation = false;
 
 		$data['benua'] = $this->WebApi->get_location($benua);
@@ -56,10 +58,12 @@ class Page extends CI_Controller {
 		{
 			show_404();
 		}
-		$this->set_view('country', $data);
+		$this->_set_view('country', $data);
 	}
-	public function get_hostname($negara)
+	public function get_hostname($negara = FALSE)
 	{
+		if ($negara === FALSE) { show_404(); }
+
 		$isHostAlready = false;
 
                 $data['server'] = $this->WebApi->get_hostname($negara);
@@ -69,13 +73,13 @@ class Page extends CI_Controller {
 		{
 			$data['server'] = $this->WebApi->get_hostname('Singapore');
 		}
-                $this->set_view('hostname', $data);
+                $this->_set_view('hostname', $data);
         }
-        public function set_hostname($id)
+        public function set_hostname($id=FALSE)
 	{
+		if ($id === FALSE) { show_404(); }
+
 		$create['id']= $this->WebApi->get_server_details($id, 'Id');
-		$this->set_view('create', $create);
+		$this->_set_view('create', $create);
         }
-	public function test() {
-	}
 }
