@@ -20,7 +20,9 @@ class WebApi extends CI_Model {
 	public function __construct()
 	{
 		parent::__construct();
+
 		$this->load->database();
+		$this->load->library('sshcepat');
 	}
 	public function get_continent($cid = FALSE)
 	{
@@ -42,7 +44,27 @@ class WebApi extends CI_Model {
 			$query = $this->db->get_where('server', array('Location' => $location));
         		return $query->result_array();
 		}
-		$query = $this->db->get_where('server', array('Id' => $id));
+		$query = $this->db->get('server', array('Id' => $id));
 		return $query->result_array();
+	}
+	public function get_server_details($id, $data) {
+
+		$id = (string)(int)$id;
+		$array=array();
+
+		$query = $this->db->query("SELECT * FROM server WHERE Id =$id;");
+		foreach ($query->result_array() as $row) {
+			$tmp = array(
+					'Id' => $row['Id'],
+					'HostName' => $row['HostName'],
+					'RootPasswd' => $row['RootPasswd'],
+					'MaxUser' => $row['MaxUser'],
+					'OpenSSH' => $row['OpenSSH'],
+					'DropBear' => $row['Dropbear']
+			);
+			array_push($array,$tmp);
+		}
+		if (empty($array[0][$data])) {show_404();}
+		return $array[0][$data];
 	}
 }

@@ -1,47 +1,52 @@
 <?php
 class Ajax extends CI_Controller {
 
+	private $username, $password, $limit;
+
         public function __construct()
         {
-                parent::__construct();
+		parent::__construct();
 
                 $this->load->model('WebApi');
                 $this->load->helper('url_helper');
 		$this->load->library('session');
+		$this->load->library('sshcepat');
         }
-	private function set_resp($status, $response)
-	{
-		return json_encode(array('status'=>$status,'result'=>$response));
-	}
 	public function ajax_post()
 	{
 
 		if(isset($_POST))
 		{
 			if (empty($_POST['username'])){
-				$this->session->set_flashdata('<p class="text-danger">username', 'is missing</p>');
+				$this->session->set_flashdata('Username', 'Username is empty!!');
 			}
 			if (empty($_POST['password'])){
-				$this->session->set_flashdata('<p class="text-danger">passsword', 'is missing</p>');
+				$this->session->set_flashdata('Password', 'Password is empty!!');
 			}
 			if (count($this->session->flashdata()) > 0) {
-				echo json_encode($this->session->flashdata());
+				echo json_encode(array('status'=>'Failed', 'result'=> $this->session->flashdata()));
 				exit;
 			}
 			else {
-				$array = array(
-					'username' => $_POST['username'],
-					'password' => $_POST['password']
-				);
-				echo $this->set_resp('Success', 'falid');
+				$hostname = $this->WebApi->get_server_details($_POST['id'], 'HostName'); // read from form;
+				$rootpass = $this->WebApi->get_server_details($_POST['id'], 'RootPasswd'); //read from mysql
+
+				$limit = $this->WebApi->get_server_details($_POST['id'], 'MaxUser');
+				$expired = 7; // read from user expired
+				$count = 5; // read form count mysql
+
+				if ($count === $limit) {
+				echo json_encode(
+					array(
+						'status'=>'Failed','result'=> array(
+						'limit' => 'Limit Account on host '. $hostname)
+					));
+					exit;
+				}
+				$this->sshcepat->set_hostname($hostname, $rootpass);
+				$this->sshcepat->set_user($_POST['username'],$_POST['password'],$expired);
+				$this->sshcepat->result(); //show result
 			}
         	}
-	}
-	public function test() {
-		$this->load->library('sshcepat');  //library
-
-		$this->sshcepat->set_hostname('api.sshcepat.com', 'kampret123'); // hostname, rootpass
-		$this->sshcepat->set_user('jawir','kirun','3'); // user, pass, limit
-		echo $this->sshcepat->result(); // result
 	}
 }

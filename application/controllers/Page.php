@@ -68,7 +68,7 @@ class Page extends CI_Controller {
         }
         public function set_hostname($id)
 	{
-		$create['ssh']= $this->WebApi->get_hostname('', $id);
+		$create['id']= $this->WebApi->get_server_details($id, 'Id');
 		$this->set_view('create', $create);
         }
 }
