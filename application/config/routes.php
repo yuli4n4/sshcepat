@@ -54,13 +54,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /*$route['default_controller'] = 'belajar';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-*/ 
+*/
 //$route['belajar/(:any)'] = 'view/$1';
 //$route['belajar'] = 'belajar';
 //$route['(:any)'] = 'belajar/view/$1';
 $route['default_controller'] = 'page';
-//$route['page/set_view'] ='page/not_found';//protected bypass method
-$route['ajax/ajax_post'] ='page/not_found';//protected bypass method
 
 $route['page/secure-shell-server/continent/(:any)'] = 'page/get_location/$1';
 $route['page/secure-shell-server/continent/(:any)/(:any)'] = 'page/get_hostname/$2';
