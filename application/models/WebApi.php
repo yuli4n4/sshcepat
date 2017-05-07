@@ -24,6 +24,10 @@ class WebApi extends CI_Model {
 		$this->load->database();
 		$this->load->library('sshcepat');
 	}
+	public function get_site_details() {
+		$query = $this->db->get('website');
+		return $query->result_array();
+	}
 	public function get_continent($cid = FALSE)
 	{
 		if ($cid === FALSE )

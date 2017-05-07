@@ -47,7 +47,7 @@
 			</div>
 		</div></div>
 			<div class="container"><div class="list-group"><div class="list-group-item">
-				<p style="font-family:lucida grande, tahoma, verdana, arial, sans-serif;" align="justify">Welcome to the SSHGoogle.com . We provide SSH accounts for free every day . Virutal Private Server which we have very much and best . Our servers are of good quality and have a high -speed connection Here we give you ssh server united states account for free for one month . Therefore , you are lucky to get it . may be useful and good use of our fast server. We share premium virtual private server and ssh premium accounts for free for one week , with high- speed servers . We always provide the best server , a virtual private server server jersey of America. The best that OpenVZ VPS server with 1GB of RAM . Equipped with a good transfer rate . All of these servers we provide for free for one month .</p>
+				<p style="font-family:lucida grande, tahoma, verdana, arial, sans-serif;" align="justify">Welcome to the <?php echo $brand; ?> . We provide SSH accounts for free every day . Virutal Private Server which we have very much and best . Our servers are of good quality and have a high -speed connection Here we give you ssh server united states account for free for one month . Therefore , you are lucky to get it . may be useful and good use of our fast server. We share premium virtual private server and ssh premium accounts for free for one week , with high- speed servers . We always provide the best server , a virtual private server server jersey of America. The best that OpenVZ VPS server with 1GB of RAM . Equipped with a good transfer rate . All of these servers we provide for free for one month .</p>
 			</div></div></div>
 	</section>
 	<script>

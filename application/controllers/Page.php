@@ -28,8 +28,13 @@ class Page extends CI_Controller {
 	}
 	private function set_view($file, $init)
 	{
-                $data['title'] = 'Free SSH Account';
-                $data['brand'] = 'YOURSITE';
+		foreach ($this->WebApi->get_site_details() as $row) {
+			$data['author'] = $row['author'];
+                        $data['title'] = $row['title'];
+			$data['description'] = $row['description'];
+			$data['brand'] = $row['brand'];
+			break;
+                }
 
 		$this->load->view('bootstrap/header', $data);
                 $this->load->view($file, $init);
@@ -71,4 +76,6 @@ class Page extends CI_Controller {
 		$create['id']= $this->WebApi->get_server_details($id, 'Id');
 		$this->set_view('create', $create);
         }
+	public function test() {
+	}
 }
