@@ -24,8 +24,11 @@ class Ajax extends CI_Controller {
 				$this->session->set_flashdata('Password', 'Password is empty!!');
 			}
 			if (count($this->session->flashdata()) > 0) {
-				echo json_encode(array('status'=>'Failed', 'result'=> $this->session->flashdata()));
-				exit;
+				if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+					echo json_encode(array('status'=>'Failed', 'result'=> $this->session->flashdata()));
+					exit;
+				}
+				show_404();
 			}
 			else {
 				$hostname = $this->WebApi->get_server_details($_POST['id'], 'HostName'); // read from form;
