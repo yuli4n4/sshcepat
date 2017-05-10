@@ -1,43 +1,69 @@
 <?php
+/*
+ * Copyright (c) 2006-2017 Adipati Arya <jawircodes@gmail.com>,
+ * 2006-2017 http://sshcepat.com
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
 class Post extends CI_Controller {
-	private $server;
-
 	public function __construct()
 	{
 		parent::__construct();
-		$this -> load -> model('ssh');
+
+		date_default_timezone_set('Asia/Jakarta');
+
+		$this->load->library('sshcepat');
+		$this->load->model('ssh');
 	}
 	private function __show($status, $value){
 		echo json_encode(array ('status' => $status, 'result' => $value ) );
 	}
 	private function __requestAccount($id, $user, $pass) {
-		$this -> load -> library('sshcepat'); // add lib ssh
-
 		$this -> ssh -> setServer($id); // server set
 
-		// get server info
-		$hostName = $this->ssh->getHostname();
-		$rootPwd = $this->ssh->getRootPasswd();
-		$expired = $this->ssh->getExpired();
+		if (empty($this->ssh->getHostname())) {
+			$this->__show('Failed', array('Hostname not found')); return;
+		}
+		if ( $this->ssh->getCounter()  >= $this->ssh->getMaxUser() )
+		{
+			if ($this->ssh->getDate() === date("Y-m-d")){
+				$this->__show('Failed', array('Limit account on Day'));
+			 	return;
+			}
 
-		if (empty ($hostName)) {
-			$this->__show('Failed', array('Hostname not found'));
+			$this->ssh-> updateDate();
+
+			$this->__show('Failed', array('Please Try Againt!!'));
 			return;
 		}
-		$set = $this->sshcepat->setHostname($hostName, $rootPwd);
-		if ( $set )
+		if ( $this -> __getHostName() )
 		{
-			$add = $this -> sshcepat -> addAccount($user, $pass, $expired);
-			if ($add === 'Success') {
-				$dataShow = array (
-					'Status' => 'User Add Successfully!!.',
-					'Hostname/Ip' => $hostName,
-					'Username' => $user,
-					'Password' => $pass,
-					'Reg_date' => date("Y-m-d H:i:s",time()),
-					'Exp_date' => date("Y-m-d H:i:s",strtotime("+$expired days",time()))
+			$expired = $this->ssh->getExpired();
+
+			if (($this -> __setUser($user, $pass, $expired)) === 'Success') {
+				$this -> ssh -> updateCounter();
+				$this->__show(
+					'Success',
+					   array(
+						'Status' => 'User Add Successfully!!.',
+						'Hostname/Ip' => $this->ssh->getHostname(),
+						'Username' => $user,
+						'Password' => $pass,
+						'Reg_date' => date("Y-m-d H:i:s",time()),
+						'Exp_date' => date("Y-m-d H:i:s",strtotime("+$expired days",time())
+						)
+					)
 				);
-				$this->__show('Success', $dataShow);
 			}
 			return;
 		}
@@ -68,5 +94,12 @@ class Post extends CI_Controller {
                 }
 		$this -> __requestAccount($id, $user, $passwd);
 
+	}
+	private function __getHostname()
+	{
+		 return $this->sshcepat-> setHostname($this->ssh->getHostname(), $this->ssh->getRootPasswd());
+	}
+	private function __setUser($u, $p, $e) {
+		return  $this -> sshcepat ->addAccount($u, $p, $e);
 	}
 }

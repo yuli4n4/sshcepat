@@ -11,7 +11,7 @@
 		<div class="container"><div class="list-group"><div class="list-group-item">
 			<div class="row contact-wrap">
 				<div class="status alert alert-success" style="display: none"></div>
-					<form>
+					<form action="<?php echo site_url('post');?>" method="POST">
 						<input type="hidden" name="id" value="<?php echo $id;?>">
 						<div class="col-sm-6">
 							<div class="form-group">
@@ -48,4 +48,4 @@
 				<p style="font-family:lucida grande, tahoma, verdana, arial, sans-serif;" align="justify">Welcome to the SSHGoogle.com . We provide SSH accounts for free every day . Virutal Private Server which we have very much and best . Our servers are of good quality and have a high -speed connection Here we give you ssh server united states account for free for one month . Therefore , you are lucky to get it . may be useful and good use of our fast server. We share premium virtual private server and ssh premium accounts for free for one week , with high- speed servers . We always provide the best server , a virtual private server server jersey of America. The best that OpenVZ VPS server with 1GB of RAM . Equipped with a good transfer rate . All of these servers we provide for free for one month .</p>
 			</div></div></div>
 	</section>
-	<script>$(document).ready(function(){$('button[type="submit"]').on('click',function(){$('.alert').remove();$.ajax({type:'POST',dataType:'json',url:'<?php echo site_url("post");?>',data:$('form').serialize(),error: function(xhr,ajaxOptions,thrownError){$('#response').html(xhr);},cache:false,beforeSend:function(){$('.response').html('<img src="<?php echo base_url(); ?>images/loading.gif"\>');},success:function(s){if(s.status=='Failed'){$.each(s.result,function(x,y){$('.result').append('<div class="alert alert-danger"><tr><td>' + y + '</td>' + '</tr></div>');});$('.response').remove();return false;}$.each(s.result,function(x,y){$('.result').append('<tr><td>' + x + '</td>' + '<td>:</td>' + '<td>'+ y + '</td></tr>');});$('.response').remove();$('.btn').remove();return false;}});return false;});});</script>
+	<script>$(document).ready(function(){$('div[type="submit"]').on('click',function(){$('.alert').remove();$.ajax({type:'POST',dataType:'json',url:'<?php echo site_url("post");?>',data:$('form').serialize(),error: function(xhr,ajaxOptions,thrownError){$('#response').html(xhr);},cache:false,beforeSend:function(){$('.response').html('<img src="<?php echo base_url(); ?>images/loading.gif"\>');},success:function(s){if(s.status=='Failed'){$.each(s.result,function(x,y){$('.result').append('<div class="alert alert-danger"><tr><td>' + y + '</td>' + '</tr></div>');});$('.response').remove();return false;}$.each(s.result,function(x,y){$('.result').append('<tr><td>' + x + '</td>' + '<td>:</td>' + '<td>'+ y + '</td></tr>');});$('.response').remove();$('.btn').remove();return false;}});return false;});});</script>
