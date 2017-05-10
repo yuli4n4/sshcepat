@@ -65,6 +65,32 @@ INSERT INTO `country` VALUES (1,'Asia','Singapore'),(2,'Asia','Indonesia'),(3,'A
 UNLOCK TABLES;
 
 --
+-- Table structure for table `limit`
+--
+
+DROP TABLE IF EXISTS `limit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `limit` (
+  `Hostname` varchar(23) NOT NULL,
+  `Expired` int(11) NOT NULL DEFAULT '7',
+  `Counter` int(4) NOT NULL DEFAULT '1',
+  `Date` date DEFAULT NULL,
+  PRIMARY KEY (`Hostname`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `limit`
+--
+
+LOCK TABLES `limit` WRITE;
+/*!40000 ALTER TABLE `limit` DISABLE KEYS */;
+INSERT INTO `limit` VALUES ('192.168.122.22',7,1,'2017-05-09');
+/*!40000 ALTER TABLE `limit` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `server`
 --
 
@@ -91,7 +117,7 @@ CREATE TABLE `server` (
 
 LOCK TABLES `server` WRITE;
 /*!40000 ALTER TABLE `server` DISABLE KEYS */;
-INSERT INTO `server` VALUES (1,'128.99.117.44','kampret123',5,'S_DO-01','Singapore','22','443','Asia'),(2,'128.99.117.45','pNLKcDG',10,'S_DO-02','Indonesia','22','443','Asia'),(3,'128.99.117.47','okwelkmN',10,'S_DO-03','Japan','22','443','Asia'),(4,'128.99.117.46','okwelkmnK',10,'S_DO-04','Japan','22','443','Asia'),(6,'api.sshcepat.com','kampret123',7,'SGDO-04','Singapore','22','443','Asia'),(7,'122.33.44.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(8,'124.33.44.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(9,'142.33.44.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(10,'122.33.444.454','Klas',34,'SGDO-54','Singapore','22','443','Asia'),(11,'122.33.44.154','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(12,'122.33.464.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(13,'122.33.445.454','Klas',34,'SGDO-04','Singapore','22','443','Asia');
+INSERT INTO `server` VALUES (1,'128.99.117.44','kampret123',5,'S_DO-01','Singapore','22','443','Asia'),(2,'128.99.117.45','pNLKcDG',10,'S_DO-02','Indonesia','22','443','Asia'),(3,'128.99.117.47','okwelkmN',10,'S_DO-03','Japan','22','443','Asia'),(4,'128.99.117.46','okwelkmnK',10,'S_DO-04','Japan','22','443','Asia'),(6,'192.168.122.22','1',7,'SGDO-04','Singapore','22','443','Asia'),(7,'122.33.44.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(8,'124.33.44.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(9,'142.33.44.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(10,'122.33.444.454','Klas',34,'SGDO-54','Singapore','22','443','Asia'),(11,'122.33.44.154','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(12,'122.33.464.454','Klas',34,'SGDO-04','Singapore','22','443','Asia'),(13,'122.33.445.454','Klas',34,'SGDO-04','Singapore','22','443','Asia');
 /*!40000 ALTER TABLE `server` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,4 +156,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-07 10:34:15
+-- Dump completed on 2017-05-10  2:25:45
