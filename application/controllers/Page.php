@@ -77,9 +77,12 @@ class Page extends CI_Controller {
         }
         public function set_hostname($id=FALSE)
 	{
+		$this->load->library('form_validation');
 		if ($id === FALSE) { show_404(); }
-
-		$create['id']= $this->WebApi->get_server_details($id, 'Id');
+		foreach ($this->WebApi->get_server_details($id) as $row)
+		{
+			$create['id'] =  $row['Id'];
+                }
 		$this->_set_view('create', $create);
         }
 }

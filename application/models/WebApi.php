@@ -22,7 +22,6 @@ class WebApi extends CI_Model {
 		parent::__construct();
 
 		$this->load->database();
-		$this->load->library('sshcepat');
 	}
 	public function get_site_details() {
 		$query = $this->db->get('website');
@@ -51,8 +50,8 @@ class WebApi extends CI_Model {
 		$query = $this->db->get('server', array('Id' => $id));
 		return $query->result_array();
 	}
+/*
 	public function get_server_details($id, $data) {
-
 		$id = (string)(int)$id;
 		$array=array();
 
@@ -71,4 +70,10 @@ class WebApi extends CI_Model {
 		if (empty($array[0][$data])) {show_404();}
 		return $array[0][$data];
 	}
+*/
+	public function get_server_details($id) {
+		$query = $this->db->get_where('server', array('Id' => $id));
+                return $query->result_array();
+	}
+
 }
