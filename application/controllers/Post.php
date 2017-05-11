@@ -21,7 +21,7 @@ class Post extends CI_Controller {
 		parent::__construct();
 
 		date_default_timezone_set('Asia/Jakarta');
-
+		$this->load->helper('url_helper');
 		$this->load->library('sshcepat');
 		$this->load->model('ssh');
 	}
@@ -42,9 +42,6 @@ class Post extends CI_Controller {
 			}
 
 			$this->ssh-> updateDate();
-
-			$this->__show('Failed', array('Please Try Againt!!'));
-			return;
 		}
 		if ( $this -> __getHostName() )
 		{

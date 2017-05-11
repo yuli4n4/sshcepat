@@ -71,9 +71,12 @@ class Page extends CI_Controller {
 		}
                 $this->_set_view('hostname', $data);
         }
-        public function set_hostname($id=FALSE)
+        public function set_hostname($id)
 	{
-		if ($id === FALSE) { show_404(); }
+		if (!is_numeric($id) || strlen($id) > 5 ) {
+				show_404();
+		}
+
 		$data['id'] = $id;
 		$this->_set_view('create', $data);
         }

@@ -19,6 +19,7 @@
 class Ssh extends CI_Model {
 
 	private $hostName, $rootPasswd, $maxUser, $expired;
+
 	private $counter, $date;
 
 	public function __construct()
@@ -37,7 +38,7 @@ class Ssh extends CI_Model {
 			$this->maxUser = $row['MaxUser'];
 			$this->expired = $row['Expired'];
 		}
-		$this -> __getUserExpired($this->hostName);
+		$this-> __getUserExpired($this->hostName);
 
 	}
 	private function __getUserExpired($val) {
@@ -46,28 +47,31 @@ class Ssh extends CI_Model {
 
 		foreach ($query->result_array() as $row)
 		{
-			$this -> counter = $row['Counter'];
-			$this -> date = $row['Date'];
+			$this->counter = $row['Counter'];
+			$this->date = $row['Date'];
 		}
 	}
 	public function updateCounter() {
 
-		$count = $this -> getCounter() + 1;
+		$count = $this->getCounter() + 1;
 		$this->db->where('Hostname', $this->getHostName());
 		$this->db->update('userlimit', array('Counter'=>$count));
-		//$count = $this -> getCounter() + 1;
-		//$sql = "UPDATE userlimit SET Counter = ? WHERE Hostname = ?";
-		//$this->db->query($sql, array($count,$this->getHostName()));
 	}
-	 public function updateDate() {
-		//$data = array('Counter' => 1,'Date' => date("Y-m-d"));
+	public function updateDate() {
+
 		$this->db->where('Hostname', $this->getHostName());
 		$this->db->update('userlimit',array('Counter'=>NULL,'Date'=>date("Y-m-d")));
+		exit;
         }
 	public function getHostName() { return $this->hostName; }
+
 	public function getRootPasswd() { return $this->rootPasswd; }
+
 	public function getMaxUser() { return $this->maxUser; }
+
 	public function getExpired() { return $this->expired; }
+
 	public function getCounter() { return $this->counter; }
+
 	public function getDate() { return $this->date; }
 }
