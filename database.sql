@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `continent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `continent` (
-  `Cid` varchar(20) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`Cid`)
+  PRIMARY KEY (`Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -35,7 +35,7 @@ CREATE TABLE `continent` (
 
 LOCK TABLES `continent` WRITE;
 /*!40000 ALTER TABLE `continent` DISABLE KEYS */;
-INSERT INTO `continent` VALUES ('Asia','Asia'),('North-America','North America'),('Europe','Europe'),('South-America','South America'),('Africa','Africa'),('Oceania','Oceania');
+INSERT INTO `continent` VALUES (1,'Asia'),(2,'North America'),(3,'Europe'),(4,'South America'),(5,'Africa'),(6,'Oceania');
 /*!40000 ALTER TABLE `continent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -48,7 +48,7 @@ DROP TABLE IF EXISTS `country`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `country` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Cid` varchar(20) DEFAULT NULL,
+  `Name` varchar(20) DEFAULT NULL,
   `Country` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
@@ -118,7 +118,7 @@ CREATE TABLE `userlimit` (
 
 LOCK TABLES `userlimit` WRITE;
 /*!40000 ALTER TABLE `userlimit` DISABLE KEYS */;
-INSERT INTO `userlimit` VALUES (1,'192.168.122.22',4,'2017-05-11');
+INSERT INTO `userlimit` VALUES (1,'192.168.122.22',7,'2017-05-11');
 /*!40000 ALTER TABLE `userlimit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,7 +144,7 @@ CREATE TABLE `website` (
 
 LOCK TABLES `website` WRITE;
 /*!40000 ALTER TABLE `website` DISABLE KEYS */;
-INSERT INTO `website` VALUES ('YOURWEB','SSHcepat.com','Free SSH Account','Fast Premium SSH Account Server Singapore, US, Japan, Netherlands, France, Indonesia, Vietnam, Germany,  Russia, Canada etc with Unlimited Data and High Speed Connection');
+INSERT INTO `website` VALUES ('site1','SSHcepat.com','Free SSH Account','Fast Premium SSH Account Server Singapore, US, Japan, Netherlands, France, Indonesia, Vietnam, Germany,  Russia, Canada etc with Unlimited Data and High Speed Connection');
 /*!40000 ALTER TABLE `website` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -157,4 +157,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-10 14:58:18
+-- Dump completed on 2017-05-11  4:16:18
