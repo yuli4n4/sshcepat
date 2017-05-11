@@ -29,21 +29,16 @@ class Page extends CI_Controller {
 	}
 	private function _set_view($file, $init)
 	{
-		foreach ($this->WebApi->get_site_details() as $row) {
-			$data['author'] = $row['author'];
-                        $data['title'] = $row['title'];
-			$data['description'] = $row['description'];
-			$data['brand'] = $row['brand'];
-			break;
-                }
+		$header = $this->WebApi->get_site_details();
 
-		$this->load->view('bootstrap/header', $data);
-                $this->load->view($file, $init);
+		$this->load->view('bootstrap/header', $header);
+		$this->load->view($file, $init);
                 $this->load->view('bootstrap/footer');
 	}
 	public function index()
         {
                 $index['benua'] = $this->WebApi->get_continent();
+
                 $this->_set_view('index', $index);
         }
 	public function get_location($benua = FALSE)
@@ -78,12 +73,8 @@ class Page extends CI_Controller {
         }
         public function set_hostname($id=FALSE)
 	{
-		$this->load->library('form_validation');
 		if ($id === FALSE) { show_404(); }
-		foreach ($this->WebApi->get_server_details($id) as $row)
-		{
-			$create['id'] =  $row['Id'];
-                }
-		$this->_set_view('create', $create);
+		$data['id'] = $id;
+		$this->_set_view('create', $data);
         }
 }

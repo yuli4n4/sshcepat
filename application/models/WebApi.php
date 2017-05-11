@@ -17,6 +17,8 @@
  */
 
 class WebApi extends CI_Model {
+	private $serverDetail;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -25,7 +27,18 @@ class WebApi extends CI_Model {
 	}
 	public function get_site_details() {
 		$query = $this->db->get('website');
-		return $query->result_array();
+
+		foreach ($query->result_array() as $row)
+		{
+			$data = array (
+				'author' => $row['author'],
+				'title' => $row['title'],
+				'description' => $row['description'],
+				'brand' => $row['brand']
+			);
+			break;
+                }
+		return $data;
 	}
 	public function get_continent($cid = FALSE)
 	{
@@ -49,31 +62,6 @@ class WebApi extends CI_Model {
 		}
 		$query = $this->db->get('server', array('Id' => $id));
 		return $query->result_array();
-	}
-/*
-	public function get_server_details($id, $data) {
-		$id = (string)(int)$id;
-		$array=array();
-
-		$query = $this->db->query("SELECT * FROM server WHERE Id =$id;");
-		foreach ($query->result_array() as $row) {
-			$tmp = array(
-					'Id' => $row['Id'],
-					'HostName' => $row['HostName'],
-					'RootPasswd' => $row['RootPasswd'],
-					'MaxUser' => $row['MaxUser'],
-					'OpenSSH' => $row['OpenSSH'],
-					'DropBear' => $row['Dropbear']
-			);
-			array_push($array,$tmp);
-		}
-		if (empty($array[0][$data])) {show_404();}
-		return $array[0][$data];
-	}
-*/
-	public function get_server_details($id) {
-		$query = $this->db->get_where('server', array('Id' => $id));
-                return $query->result_array();
 	}
 
 }
