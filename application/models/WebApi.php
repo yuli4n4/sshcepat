@@ -17,51 +17,57 @@
  */
 
 class WebApi extends CI_Model {
-	private $serverDetail;
 
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
-
 		$this->load->database();
 	}
 	public function get_site_details() {
 		$query = $this->db->get('website');
-
-		foreach ($query->result_array() as $row)
-		{
-			$data = array (
+		foreach ($query->result_array() as $row) {
+			return array (
 				'author' => $row['author'],
 				'title' => $row['title'],
 				'description' => $row['description'],
 				'brand' => $row['brand']
 			);
-			break;
-                }
-		return $data;
-	}
-	public function get_continent($cid = FALSE)
-	{
-		if ($cid === FALSE )
-		{
-			$query = $this->db->get('continent');
-			return $query->result_array();
 		}
-		$query = $this->db->get_where('continent', array('Cid' => $cid));
-		return  $query->result_array();
 	}
-	public function get_location($cid) {
-                 $query = $this->db->get_where('country', array('Cid' => $cid));
-                 return $query->result_array();
-	}
-	public function get_hostname($location, $id=FALSE) {
-		if ($id === FALSE )
-		{
-			$query = $this->db->get_where('server', array('Location' => $location));
-        		return $query->result_array();
+	public function get_continent() {
+		$query = $this->db->get_where('continent');
+		$arr = array();
+		foreach ($query->result_array() as $row) {
+			array_push($arr, $row['Name']);
 		}
-		$query = $this->db->get('server', array('Id' => $id));
-		return $query->result_array();
+		return $arr;
 	}
-
+	public function get_location($name) {
+		$query = $this->db->get_where('country', array('Name' => $name));
+		$arr = array();
+		foreach ($query->result_array() as $row) {
+			$tmp = array(
+				'Name' => $row['Name'],
+				'Country' => $row['Country']
+			);
+			array_push($arr, $tmp);
+		}
+		return $arr;
+	}
+	public function get_hostname($location) {
+		$query = $this->db->get_where('server', array('Location' => $location));
+		$arr = array();
+		foreach ($query->result_array() as $row) {
+			$tmp = array(
+				'Id' => $row['Id'],
+				'ServerName' => $row['ServerName'],
+				'HostName' => $row['HostName'],
+				'Location' => $row['Location'],
+				'OpenSSH' => $row['OpenSSH'],
+				'Dropbear' => $row['Dropbear'],
+				'MaxUser' => $row['MaxUser']
+			);
+			array_push($arr, $tmp);
+		}
+		return $arr;
+	}
 }

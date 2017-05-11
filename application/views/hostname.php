@@ -42,7 +42,7 @@ We use premium servers data center of Asia (Japan, Korea, Hong Kong, Vietnam, Ma
 					<tr><td>Dropbear</td><td>:</td><td><?php echo $ok['Dropbear'];?></td></tr>
 					<tr><td>Limit Acc</td><td>:</td><td><?php echo $ok['MaxUser'];?> / Day</td></tr>
 				</table><hr>
-					<a class="btn btn-primary btn-sm pull-right" href="<?php echo site_url('page/secure-shell-server/continent/').$ok['Cid'].'/'.$ok['Location'].'/'.$ok['ServerName'].'/'.$ok['Id'];?>">Create Account</a>
+					<a class="btn btn-primary btn-sm pull-right" href="<?php echo site_url('page/secure-shell-server/continent/').$ok['Location'].'/'.$ok['Location'].'/'.$ok['ServerName'].'/'.$ok['Id'];?>">Create Account</a>
 			</div>
 			<div class="panel-footer" style="background-color:#373735;"></div>
 		</div>

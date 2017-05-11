@@ -21,20 +21,20 @@
 <section id="services" class="service-item">
 <div class="container">
 		<div class="row">
-			<?php foreach($benua as $ok ):?>
+			<?php foreach($benua as $name ):?>
 			<div class="col-sm-6 col-md-4">
 				<div class="media services-wrap wow fadeInDown">
-					<h4>SSH Server <?php echo $ok['Name']; ?></h4>
+					<h4>SSH Server <?php echo $name; ?></h4>
 					<div class="pull-left">
                             			<img class="img-responsive" src="<?php echo base_url();?>images/services/services1.png">
                         		</div>
 					<div class="media-body" style="height:120px;">
 						Available Country: <br/>
-							<?php foreach($this->WebApi->get_location($ok['Cid']) as $data):?>
+						<?php foreach($this->WebApi->get_location(str_replace(' ','-',$name)) as $data):?>
 								<?php echo '- '.$data['Country']. '<br/>'; ?>
 							<?php endforeach; ?>
 					</div>
-					<a class="btn btn-danger" href="<?php echo site_url('page/secure-shell-server/continent/').$ok['Cid']?>">Select In <?php echo $ok['Name'];?></a>
+					<a class="btn btn-danger" href="<?php echo site_url('page/secure-shell-server/continent/').str_replace(' ','-',$name)?>">Select In <?php echo $name;?></a>
 				</div>
 			</div>
 			<?php endforeach; ?>
