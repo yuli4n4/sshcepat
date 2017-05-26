@@ -18,7 +18,7 @@
 
 class Ssh extends CI_Model {
 
-	private $hostName, $rootPasswd, $maxUser, $expired;
+	private $hostName, $rootPasswd, $maxUser, $expired, $price, $status;
 
 	private $counter, $date;
 
@@ -37,6 +37,8 @@ class Ssh extends CI_Model {
 			$this->rootPasswd = $row['RootPasswd'];
 			$this->maxUser = $row['MaxUser'];
 			$this->expired = $row['Expired'];
+			$this->price = $row['Price'];
+			$this->status = $row['Status'];
 		}
 		$this-> __getUserExpired($this->hostName);
 
@@ -74,4 +76,6 @@ class Ssh extends CI_Model {
 	public function getCounter() { return $this->counter; }
 
 	public function getDate() { return $this->date; }
+	public function getPrice() { return $this->price; }
+	public function active() { return $this->status; }
 }

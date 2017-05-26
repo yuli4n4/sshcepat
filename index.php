@@ -236,6 +236,13 @@ switch (ENVIRONMENT)
 	define('SYSDIR', basename(BASEPATH));
 
 	// The path to the "application" directory
+	if (is_dir('install')) {
+			$redir = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+			$redir .= "://".$_SERVER['HTTP_HOST'];
+			$redir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+			header( 'Location: install');
+			exit;
+	}
 	if (is_dir($application_folder))
 	{
 		if (($_temp = realpath($application_folder)) !== FALSE)

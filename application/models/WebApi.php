@@ -24,11 +24,15 @@ class WebApi extends CI_Model {
 	}
 	public function get_site_details() {
 		$query = $this->db->get('website');
+		if (empty($query -> result_array())) {
+			exit;
+		}
 		foreach ($query->result_array() as $row) {
 			return array (
 				'author' => $row['author'],
 				'title' => $row['title'],
 				'description' => $row['description'],
+				'keyword' => $row['keyword'],
 				'brand' => $row['brand']
 			);
 		}
@@ -41,7 +45,8 @@ class WebApi extends CI_Model {
 		}
 		return $arr;
 	}
-	public function get_location($name) {
+	public function get_location($name = FALSE) {
+		if ($name === FALSE) { show_404(); }
 		$query = $this->db->get_where('country', array('Name' => $name));
 		$arr = array();
 		foreach ($query->result_array() as $row) {
@@ -52,6 +57,12 @@ class WebApi extends CI_Model {
 			array_push($arr, $tmp);
 		}
 		return $arr;
+	
+		
+	}
+	public function get_country() {
+		$query = $this->db->get('country');
+		return $query->result_array();
 	}
 	public function get_hostname($location) {
 		$query = $this->db->get_where('server', array('Location' => $location));

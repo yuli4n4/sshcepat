@@ -1,6 +1,5 @@
 <?php
-if ( ! defined('BASEPATH'))
-	exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Copyright (c) 2006-2017 Adipati Arya <jawircodes@gmail.com>,
  * 2006-2017 http://sshcepat.com
@@ -25,21 +24,21 @@ class Page extends CI_Controller {
 
 		date_default_timezone_set('Asia/Jakarta');
 		$this->load->model('WebApi');
+		$this->load->library(array('session'));
 		$this->load->helper('url_helper');
 	}
 	private function _set_view($file, $init)
 	{
 		$header = $this->WebApi->get_site_details();
-
 		$this->load->view('bootstrap/header', $header);
 		$this->load->view($file, $init);
-                $this->load->view('bootstrap/footer');
+        $this->load->view('bootstrap/footer');
 	}
 	public function index()
-        {
-                $index['benua'] = $this->WebApi->get_continent();
-                $this-> _set_view('index', $index);
-        }
+	{
+		$index['benua'] = $this->WebApi->get_continent();
+		$this-> _set_view('index', $index);
+    }
 	public function get_location($benua = FALSE)
 	{
 		if ($benua === FALSE){show_404();}
@@ -61,10 +60,13 @@ class Page extends CI_Controller {
 		else {$data['server'] = $this->WebApi->get_hostname('Singapore');}
 		$this->_set_view('hostname', $data);
         }
-        public function set_hostname($id)
-	{
-		if (!is_numeric($id) || strlen($id) > 5 ) {show_404();}
-		$data['id'] = $id;
-		$this->_set_view('create', $data);
-        }
+    public function set_hostname($id) 
+    {
+			if (!is_numeric($id) || strlen($id) > 5 ) {show_404();}
+			$data['id'] = $id;
+			$this->_set_view('create', $data);
+    }
+    public function get_country() {
+		return $this -> WebApi->get_location();
+	}
 }

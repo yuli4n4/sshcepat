@@ -42,7 +42,7 @@ class Sshcepat {
 
                 if ($user === 'root') { exit; }
 
-		$this->ssh->exec("useradd -e \"$expired days\" -s /bin/false -M $user ");
+				$this->ssh->exec("useradd -e \"$expired days\" -s /bin/false -M $user ");
                 $this->ssh->enablePTY();
                 $this->ssh->exec("passwd $user");
                 $this->ssh->read("Enter new UNIX password: ");
@@ -50,7 +50,15 @@ class Sshcepat {
                 $this->ssh->read("Retype new UNIX password: ");
                 $this->ssh->write("$pass\n");
                 $this->ssh->read('password updated successfully');
-		return 'Success';
+				return 'Success';
+        }
+        public function deletAccount($user)
+        {
+		   if (empty($user)) { exit; }
+           if ($user === 'root') { exit; }
+
+			$this->ssh->exec("userdel -f $user ");
+			return true;
         }
 
 }

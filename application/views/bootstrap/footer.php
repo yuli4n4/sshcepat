@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>	
 	<section id="bottom">
 		<div class="container wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
 			<div class="row">
@@ -42,10 +43,10 @@
 			</div>
 		</div>
 	</footer>
-	<script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
-	<script src="<?php echo base_url();?>js/jquery.prettyPhoto.js"></script>
-	<script src="<?php echo base_url();?>js/jquery.isotope.min.js"></script>
-	<script src="<?php echo base_url();?>js/main.js"></script>
-	<script src="<?php echo base_url();?>js/wow.min.js"></script>
+	<script src="<?= base_url('js/bootstrap.min.js')?>"></script>
+	<script src="<?= base_url('js/jquery.prettyPhoto.js')?>"></script>
+	<script src="<?= base_url('js/jquery.isotope.min.js')?>"></script>
+	<script src="<?= base_url('js/main.js')?>"></script>
+	<script src="<?= base_url('js/wow.min.js')?>"></script>
 	</body>
 </html>
