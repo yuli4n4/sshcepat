@@ -58,7 +58,7 @@ $route['translate_uri_dashes'] = FALSE;
 //$route['belajar/(:any)'] = 'view/$1';
 //$route['belajar'] = 'belajar';
 //$route['(:any)'] = 'belajar/view/$1';
-$route['default_controller'] = 'page';
+$route['default_controller'] = 'seller/seller';
 
 $route['page/secure-shell-server/continent/(:any)'] = 'page/get_location/$1';
 $route['page/secure-shell-server/continent/(:any)/(:any)'] = 'page/get_hostname/$2';

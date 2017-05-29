@@ -7,20 +7,9 @@ class Core {
 	{
 		/* Validating the hostname, the database name and the username. The password is optional. */
 		return !empty(
-				$data['hostname']) && !empty($data['username']) && !empty($data['database']
-				
-		);
+				$data['hostname']) && !empty($data['username']) && !empty($data['database']) &&
+				!empty($data['user']) && !empty($data['email']) && !empty($data['pwd']);
 	}
-	function validate_post_admin($data)
-	{
-		/* Validating the hostname, the database name and the username. The password is optional. */
-		return !empty(
-				$data['user']) && !empty($data['email']) && !empty($data['pwd']
-				
-		);
-	}
-	
-
 	// Function to show an error
 	function show_message($type,$message) {
 		return $message;

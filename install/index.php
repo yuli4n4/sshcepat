@@ -30,12 +30,15 @@ if($_POST) {
 
 		// If no errors, redirect to registration page
 		if(!isset($message)) {
+		    $success = $core -> show_message('success', "Installasi berhasil mohon untuk menghapus folder 'install' ");
+		    /*
 			$redir = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
 			$redir .= "://".$_SERVER['HTTP_HOST'];
 			$redir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-			//$redir = str_replace('install/','',$redir); 
-			//header( 'Location: ' . $redir . 'page' ) ;
-			header( 'Location: admin.php');
+			$redir = str_replace('install/','',$redir); 
+		//	header( 'Location: ' . $redir . 'join' ) ;
+			header( 'Location: admin.php?dbhost='.$_POST['hostname']. '&dbuser='. $_POST['username'] . '&dbpwd='. $_POST['password']. '&dbname='. $_POST['database']);
+			*/
 		}
 
 	}
@@ -55,44 +58,62 @@ if($_POST) {
 	</head>
 	<body>
 	<center><h1>Installation</h1></center>
-    <?php if(is_writable($db_config_path)){?>
+	<?php if(is_writable($db_config_path)){?>
 		<div class="container">
-			<div class="row">
-			
-				<div class="col-lg-10">
-				<div class="panel panel-default">
-					<div class="panel-heading">judul
-					</div>
-					<div class="panel-body">
-					<?php if(isset($_SESSION['success'])) {echo'<div class="alert alert-success">'.$_SESSION['success']. '</div>';} ?>
+		    <div class="row">
+		        	<?php if(isset($_SESSION['success'])) {echo'<div class="alert alert-success">'.$_SESSION['success']. '</div>';} ?>
 					<?php if(isset($message)) {echo '<p class="alert alert-danger">' . $message . '</p>';}?>
 					<?php if(isset($success)) {echo '<p class="alert alert-success">' . $success . '</p>';}?>
-					<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-					<legend>Database settings</legend>
-					<div class="form-group">
-						<label for="hostname">Hostname</label>
-						<input type="text" id="hostname" value="localhost" class="form-control" name="hostname"/>
-					</div>
-					<div class="form-group">
-						<label for="username">Username</label><input type="text" id="username" class="form-control" placeholder="DATABASE USERNAME" name="username" />
-					</div>
-					<div class="form-group">
-						<label for="password">Password</label><input type="text" id="password" class="form-control" placeholder ="DATABASE PASSWORD" name="password" />
-					</div>
-					<div class="form-group">
-						<label for="database">Database Name</label><input type="text" id="database" class="form-control" placeholder="DATABASE NAME" name="database" />
-					</div>
-					
-					<input type="submit" value="Next" id="submit" class="btn btn-danger"/>
-					</form>
-				<?php } else { ?>
+		        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+		        <div class="col-xs-6">
+		            <div class="panel panel-default">
+		                <div class="panel-heading"> Database Settings </div>
+		                <div class="panel-body">
+		                    <div class="form-group">
+		                        <label for="hostname">Hostname</label>
+		                        <input type="text" id="hostname" value="localhost" class="form-control" name="hostname"/>
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="username">Username</label><input type="text" id="username" class="form-control" placeholder="DATABASE USERNAME" name="username" />
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="password">Password</label><input type="text" id="password" class="form-control" placeholder ="DATABASE PASSWORD" name="password" />
+		                    </div>
+		                    <div class="form-group">
+		                        <label for="database">Database Name</label><input type="text" id="database" class="form-control" placeholder="DATABASE NAME" name="database" />
+		                    </div>
+		                </div>
+		                <div class="panel-footer"></div>
+		            </div>
+		            
+		        </div>
+		        <div class="col-xs-6">
+		            <div class="panel panel-default">
+		                <div class="panel-heading"> Administrator Settings</div>
+		                <div class="panel-body">
+		                    <div class="form-group">
+		                        <label for="username">Admin username</label><input type="text" id="user" class="form-control" placeholder="Enter admin user" name="user" />
+		                    </div>
+					        <div class="form-group">
+					            <label for="password">Admin password</label><input type="text" id="pwd" class="form-control" placeholder ="Enter Admin password" name="pwd" />
+					       </div>
+					       <div class="form-group">
+						        <label for="database">Email</label><input type="email" id="email" class="form-control" placeholder="Enter email" name="email" />
+						  </div>
+		                </div>
+		                <div class="panel-footer"></div>
+		            </div>
+		            
+		        </div>
+		        <div class="form-group">
+		            <input type="submit" value="Install" id="submit" class="btn btn-default form-control"/>
+		        </div>
+		
+		        </form>
+    <?php } else { ?>
       <p class="alert alert-danger">Please make the application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 application/config/database.php</code></p>
-	  <?php } ?>
-					</div>
-					<div class="panel-footer"></div>
-				</div>
-			</div>
-			
+	<?php } ?>
+		    </div>
 		</div>
 	</body>
 </html>

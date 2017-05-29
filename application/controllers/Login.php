@@ -2,6 +2,8 @@
 class Login extends Ci_Controller {
 	public function __construct() {
 		parent::__construct();
+		require(APPPATH . '/third_party/password_compat-master/lib/password.php');
+		
 		$this->load->helper('url_helper');
 		$this->load->model('user_model');
 		$this->load->library(array('session'));

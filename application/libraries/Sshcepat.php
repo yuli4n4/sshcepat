@@ -17,48 +17,40 @@
 */
 class Sshcepat {
 
-	private $ssh;
-
 	public function __construct()
-        {
-                set_include_path(get_include_path() . PATH_SEPARATOR . APPPATH . '/third_party/phpseclib');
-                include(APPPATH . '/third_party/phpseclib/Net/SSH2.php');
-        }
-
-	public function setHostname($host, $root)
 	{
-		if (!empty($host) && !empty($root))
-		{
-			$ssh= new Net_SSH2($host);
-			if (!$ssh->login('root', $root)) { return false; }
-			$this -> ssh = $ssh;
-			return true;
-
-		}
-	}
-	public function addAccount($user, $pass, $expired)
-        {
-		if (empty($user) && empty($pass) && empty($expired)){ exit; }
-
-                if ($user === 'root') { exit; }
-
-				$this->ssh->exec("useradd -e \"$expired days\" -s /bin/false -M $user ");
-                $this->ssh->enablePTY();
-                $this->ssh->exec("passwd $user");
-                $this->ssh->read("Enter new UNIX password: ");
-                $this->ssh->write("$pass\n");
-                $this->ssh->read("Retype new UNIX password: ");
-                $this->ssh->write("$pass\n");
-                $this->ssh->read('password updated successfully');
-				return 'Success';
-        }
-        public function deletAccount($user)
-        {
+	    set_include_path(get_include_path() . PATH_SEPARATOR . APPPATH . '/third_party/phpseclib');
+	    include(APPPATH . '/third_party/phpseclib/Net/SSH2.php');
+    }
+	public function addAccount($data)
+	{
+		$host = $data['hostname']; $root = $data['rootpass'];
+		$user = $data['username']; $pass = $data['password'];
+		$exp = $data['expired'];
+		if ($user == 'root') { exit;}
+		$ssh= new Net_SSH2($host);
+	    if (!$ssh->login('root', $root)) { exit; }
+	    
+	    $ssh->exec("useradd -e \"$exp days\" -s /bin/false -M $user ");
+        $ssh->enablePTY();
+        $ssh->exec("passwd $user");
+        $ssh->read("Enter new UNIX password: ");
+        $ssh->write("$pass\n");
+        $ssh->read("Retype new UNIX password: ");
+        $ssh->write("$pass\n");
+        $ssh->read('password updated successfully');
+		return true;
+		
+    }
+    public function deletAccount($data)
+    {
+		   $host = $data['hostname']; $root = $data['rootpass']; $user = $data['username'];
 		   if (empty($user)) { exit; }
            if ($user === 'root') { exit; }
-
-			$this->ssh->exec("userdel -f $user ");
-			return true;
-        }
-
+		   $ssh= new Net_SSH2($host);
+		   if (!$ssh->login('root', $root)) { exit; }
+		   $ssh->exec("userdel -f $user ");
+		   return true;
+     }
+    
 }

@@ -4,7 +4,6 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		
 		$this->load->model('user_model');
-		$this->load->model('WebApi');
 		$this->load->helper('url_helper');
 		$this->load->library(array('session'));
 	}
@@ -69,7 +68,7 @@ class Admin extends CI_Controller {
 		else { show_404(); }
 	}
 	public function edit($id) {
-		$data = new stdClass();
+	  $data = new stdClass();
 		if ( isset($_SESSION['username']) && $_SESSION['is_admin'] === true ) {
 			$data -> server = $this->user_model->get_hostname($id);
 			
@@ -151,21 +150,19 @@ class Admin extends CI_Controller {
 	}
 	public function delet_account($id) {
 		$this->load->library('sshcepat');
-		
-		$hostname = $this->user_model->id_ssh($id)->hostname;
-		$rootpass = $this->user_model->get_hostname($this->user_model->id_ssh($id)->serverid)->RootPasswd;
-		$username = $this->user_model->id_ssh($id)->username;
-		
-		$set = $this->sshcepat->setHostname($hostname, $rootpass);
-		
-		if ( isset($_SESSION['username']) && $_SESSION['logged_in'] === true ) {
+		if (empty($this->user_model->id_ssh($id)->hostname)) { Show_404(); }
+		$data = array (
+			'hostname' => $this->user_model->id_ssh($id)->hostname,
+			'rootpass' => $this->user_model->get_hostname($this->user_model->id_ssh($id)->serverid)->RootPasswd,
+			'id' => $this->user_model->get_hostname($this->user_model->id_ssh($id)->serverid)->Id,
+			'username' => $this->user_model->id_ssh($id)->username
+		);
+		if ( isset($_SESSION['username']) && $_SESSION['is_admin'] === true ) {
 			if ($this->user_model->delete_user_ssh($id)) {
-				if ($set) {
-					if ($this->sshcepat->deletAccount($username)) {
-						echo 'delet success';
-					}
-				}
-				else {echo 'Root passwd wrong!';}
+					if ($this->sshcepat->deletAccount($data)) {
+						redirect(base_url('admin/cekuser/'.$data['id']));
+						
+					} else {echo 'Root passwd wrong!';}
 			}
 		}
 		else { redirect(base_url('login/login')); }

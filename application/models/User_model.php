@@ -202,4 +202,8 @@ class User_model extends CI_Model {
 	public function get_account_list($user) {
 		return $this->db->get_where('sshuser', array('created_by' => $user))->result_array();
 	}
+	public function get_country() {
+		$query = $this->db->get('country');
+		return $query->result_array();
+	}
 }

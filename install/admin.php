@@ -1,9 +1,15 @@
 <?php
+//http://sshcepat.com/install/admin.php?dbhost=localhost&dbuser=k6162467_db1&dbpwd=ok123!&dbname=k6162467_demo
 session_start();
 
-error_reporting(0); //Setting this to E_ALL showed that that cause of not redirecting were few blank lines added in some php files.
-if($_POST) {
-
+if ( isset($_GET['dbhost']) && isset($_GET['dbuser']) && isset($_GET['dbpwd']) && isset($_GET['dbname']) ) {
+                $_SESSION ['db']['hostname'] = $_GET['dbhost'];
+                $_SESSION ['db']['username'] = $_GET['dbuser'];
+                $_SESSION ['db']['password'] = $_GET['dbpwd'];
+                $_SESSION ['db']['database'] = $_GET['dbname'];
+    
+}
+ if ($_POST) {
 	// Load the classes and create the new objects
 	require_once('includes/core_class.php');
 	require_once('includes/database_class.php');
@@ -15,7 +21,7 @@ if($_POST) {
 	// Validate the post data
 	if($core->validate_post_admin($_POST) == true)
 	{
-		if($database->create_admin($_POST, $_SESSION) == false) {
+	if($database->create_admin($_POST) == false) {
 			$message = $core->show_message('error',"The database could not be created, please verify your settings.");
 		}
 		if(!isset($message)) {
@@ -27,7 +33,6 @@ if($_POST) {
 		$message = $core->show_message('error','Not all fields have been filled in correctly. Admin user, Admin password, and email');
 	}
 }
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

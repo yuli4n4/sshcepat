@@ -26,7 +26,7 @@
 					<div class="col-md-12">
 						<div class="alert alert-danger" role="alert"><?= $error ?></div>
 					</div>
-					<?php endif
+					<?php endif; ?>
 					<?php if (isset($message)) : ?>
 					<div class="col-md-12">
 						<div class="alert alert-success" role="alert"><?= $message ?></div>

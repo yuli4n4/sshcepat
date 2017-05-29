@@ -11,15 +11,15 @@
 							<?php endif; ?>
 							<form action="<?= base_url('panel/administrator/edit/'.str_replace(' ','-',$server -> ServerName).'/'.$server->Id ) ?>" method="POST">
 								<div class="form-group">
-									<label for="username">Server Name</label>
-									<input type="text" class="form-control" id="username" name="ServerName" value="<?= $server -> ServerName ?>">
+									<label for="ServerName">Server Name</label>
+									<input type="text" class="form-control" id="ServerName" name="ServerName" value="<?= $server -> ServerName ?>">
 									<p class="help-block">Virtual server name</p>
 								</div>
 								<div class="form-group">
 									<label for="sel1">Location :</label>
 									<select class="form-control" id="sel1" name="Location">
 										<option value="<?= $server->Location ?>" selected="<?= $server->Location  ?>"><?= $server->Location  ?></option>
-										<?php foreach($this->WebApi->get_country() as $row):?>
+										<?php foreach($this->user_model->get_country() as $row):?>
 										<option value="<?= $row['Country'] ?>"><?= $row['Country'] ?></option>
 										<?php endforeach;?>
 									</select>
@@ -27,7 +27,7 @@
 								</div>
 								<div class="form-group">
 									<label for="email">Harga</label>
-									<input type="number" class="form-control" id="email" name="HostName" value="<?= $server->Price ?>">
+									<input type="number" class="form-control" id="email" name="Price" value="<?= $server->Price ?>">
 									<p class="help-block">Jika harga diset 0 server akan tampil di halaman utama dg status free, tapi jika diset harga server akan muncul di menu reseller</p>
 								</div>
 								<div class="form-group">

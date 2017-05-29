@@ -2,9 +2,9 @@
 class Seller extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
-		
 		$this->load->model('user_model');
 		$this->load->helper('url_helper');
+		$this->load->library('sshcepat');
 		$this->load->library(array('session'));
 	}
 	private function _set_view($file, $init) {
@@ -17,7 +17,7 @@ class Seller extends CI_Controller {
 		
 		//if (empty($user)) {show_404();}
 		
-		if ($_SESSION['username'] === $user && $_SESSION['is_admin'] === false) {
+		if (isset($_SESSION['username']) && $_SESSION['logged_in'] === true) {
 			
 			$data = new stdClass();
 			$data->user = $this->user_model->get_user($_SESSION['user_id']);
@@ -95,76 +95,80 @@ class Seller extends CI_Controller {
 		
 	}
 	public function buy($id=FALSE) {
-		
-		
+	    $this->load->helper('form');
+		$this->load->library('form_validation');
 		
 		if (isset($_SESSION['username']) && $_SESSION['logged_in'] === true) {
-			$data = new StdClass();
-			$server = $this->user_model->get_hostname($id);
-			$user = $this->user_model->get_user($_SESSION['user_id']);
-			if (empty($server)) {show_404();}
-			$this->load->helper('form');
-			$this->load->library('form_validation');
-			$this->load->library('sshcepat');
-			 if ($server->Status) {
-				 if ($user->saldo < $server->Price) {
+		    if ($this->user_model->get_hostname($id)->Status) {
+		        if ($this->user_model->get_user($_SESSION['user_id'])->saldo < $this->user_model->get_hostname($id)->Price)
+		        {
 					 
 					 $data = new stdClass();
 					 $data->message='<p class="text-danger">Saldo anda kurang</p>';
 					 $data->user = $this->user_model->get_user($_SESSION['user_id']);
 					 $data->server=$this->user_model->get_hostname();
 					 $this->_set_view('panel/seller/servers', $data);
-					 return;
-				  }
-				  $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]');
-				  $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]');
-				  if ($this->form_validation->run() === false) {
-					  $data->server = $server; $data->user=$user;
-					  $this->load->view('panel/base/page_header');
-					  $this->load->view('panel/seller/create', $data);
-					  $this->load->view('panel/base/footer');
-					  } else {
-						$username = $this->input->post('username');
-						$password = $this->input->post('password');
-						$expired = $this->input->post('expired');
-						$set = $this->sshcepat->setHostname($server->HostName, $server->RootPasswd);
-						if ($set) { if (empty($this->user_model->get_user_id_from_ssh($username, $server->Id)) ) {
-							if ($this->sshcepat->addAccount($username, $password, $expired) == 'Success') {
-								if ($this->user_model->user_ssh($username, $server->HostName, $user->username, $expired, $server->Id, $server->Price)) {
-										$saldo = $user->saldo - $server->Price;
-										if ($this->user_model->update_saldo($user->username, $saldo)){
-											$data ->user = array (
-												'message' => '<div class="alert alert-success">Akun sukses dibuat</div>',
-												'username' => $username,
-												'password' => $password,
-												'hostname' => $server -> HostName,
-												'openssh' => $server -> OpenSSH,
-												'dropbear' => $server -> Dropbear,
-												'location' => $server -> Location,
-												'price' => $server -> Price,
-												'expired' => date("Y-m-d H:i:s",strtotime("+$expired days",time()) )
-											);
-											$this->load->view('panel/base/page_header');
-											$this->load->view('panel/seller/account', $data);
-											$this->load->view('panel/base/footer');
-										} else {echo "database error";}
-								} else { echo "database error"; }
+				}
+				  else {
+				    $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]');
+				    $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]');
+				    if ($this->form_validation->run() === false) {
+				        $data = new StdClass();
+				        
+					    $data->user = $this->user_model->get_user($_SESSION['user_id']);
+					    $data->server=$this->user_model->get_hostname($id);
+					    
+					    $this->load->view('panel/base/page_header');
+					    $this->load->view('panel/seller/create', $data);
+					    $this->load->view('panel/base/footer');
+					    
+				    } else {
+						$server=$this->user_model->get_hostname($id);
+						$by = $this->user_model->get_user($_SESSION['user_id']);
+						$dat = array(
+							'message' => '<div class="alert alert-success">Akun sukses dibuat</div>',
+						    'hostname'=>$server->HostName,
+						    'rootpass'=>$server->RootPasswd,
+						    'openssh'=>$server->OpenSSH,
+							'dropbear'=>$server->Dropbear,
+							'location'=>$server->Location,
+							'price' => $server->Price,
+						    'username'=>$this->input->post('username'),
+						    'password'=>$this->input->post('password'),
+						    'expired'=>$this->input->post('expired')
+						    );
+						    $ssh = $this ->sshcepat->addAccount($dat);
+						    if($ssh) {
+								 if ($this->user_model->user_ssh(
+									$dat['username'],
+									$dat['hostname'],
+									$by->username,
+									$dat['expired'], 
+									$server->Id, 
+									$server->Price)) 
+								{
+									$saldo = $by->saldo - $server->Price;
+									if ($this->user_model->update_saldo($by->username, $saldo)) {
+										$data = new stdClass();
+										$data->user = $dat;
+										$this->load->view('panel/base/page_header');
+										$this->load->view('panel/seller/account', $data);
+										$this->load->view('panel/base/footer');
+									}
+								}
 							}
-						} else {
-							$data->server = $server; $data->user=$user;
-							$data->message='<p class="text-danger">Username ini sudah ada</p>';
-							$this->load->view('panel/base/page_header');
-							$this->load->view('panel/seller/create', $data);
-							$this->load->view('panel/base/footer');
 						}
-						} else { echo "rootpasswd eroor";}
-			}
-		} else {
-					 $data ->server = $this->user_model->get_hostname();
-					 $data ->user = $this->user_model->get_user($_SESSION['user_id']);
-					 $this->_set_view('panel/seller/servers', $data);
-					 return;
-			 }
+						
+				    } // end form_validation
+			   } else {
+			       
+			        $data = new stdClass();
+			        $data->user = $this->user_model->get_user($_SESSION['user_id']);
+			        $data->server=$this->user_model->get_hostname();
+			        $this->_set_view('panel/seller/servers', $data); 
+			       
+			   } // server locked;
+		    
 		}
 		
 		else {redirect(base_url('login/login'));}
@@ -181,22 +185,22 @@ class Seller extends CI_Controller {
 	public function delet_account($id) {
 		$this->load->library('sshcepat');
 		if (empty($this->user_model->id_ssh($id)->hostname)) { Show_404(); }
-		$hostname = $this->user_model->id_ssh($id)->hostname;
-		$rootpass = $this->user_model->get_hostname($this->user_model->id_ssh($id)->serverid)->RootPasswd;
-		$username = $this->user_model->id_ssh($id)->username;
-		
-		$set = $this->sshcepat->setHostname($hostname, $rootpass);
-		
+		$create_by = $this->user_model->id_ssh($id)->created_by;
+		$data = array (
+			'hostname' => $this->user_model->id_ssh($id)->hostname,
+			'rootpass' => $this->user_model->get_hostname($this->user_model->id_ssh($id)->serverid)->RootPasswd,
+			'username' => $this->user_model->id_ssh($id)->username
+		);
 		if ( isset($_SESSION['username']) && $_SESSION['logged_in'] === true ) {
-			if ($this->user_model->delete_user_ssh($id)) {
-				if ($set) {
-					if ($this->sshcepat->deletAccount($username)) {
+			if ($_SESSION['username'] === $create_by ) {
+				 if ($this->user_model->delete_user_ssh($id)) {
+					if ($this->sshcepat->deletAccount($data)) {
 						redirect(base_url('panel/reseller/cek_account/'.$_SESSION['username']));
 						
-					}
-				}
-				else {echo 'Root passwd wrong!';}
-			}
+					} else {echo 'Root passwd wrong!';}
+			} 
+			} else { show_404(); } 
+			
 		}
 		else { redirect(base_url('login/login')); }
 		

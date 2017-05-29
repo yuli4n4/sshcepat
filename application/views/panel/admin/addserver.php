@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <label>Location</label>
                             <select class="form-control" name="Location">
-								<?php foreach($this->WebApi->get_country() as $row):?>
+								<?php foreach($this->user_model->get_country() as $row):?>
 								<option value="<?= $row['Country'] ?>"><?= $row['Country'] ?></option>
 								<?php endforeach;?>
 							</select>

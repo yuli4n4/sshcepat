@@ -3,7 +3,7 @@
 	</footer><!-- #site-footer -->
 
 	<!-- js -->
-	<script src="<?= base_url('js/bootstrap.min.js') ?>"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.js"></script>
 	<script src="<?= base_url('asset/js/sb-admin-2.js') ?>"></script>
 	<script src="<?= base_url('asset/js/bootstrap-datepicker.min.js') ?>"></script>
