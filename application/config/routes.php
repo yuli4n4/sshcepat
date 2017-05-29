@@ -59,10 +59,6 @@ $route['translate_uri_dashes'] = FALSE;
 //$route['belajar'] = 'belajar';
 //$route['(:any)'] = 'belajar/view/$1';
 $route['default_controller'] = 'seller/seller';
-
-$route['page/secure-shell-server/continent/(:any)'] = 'page/get_location/$1';
-$route['page/secure-shell-server/continent/(:any)/(:any)'] = 'page/get_hostname/$2';
-$route['page/secure-shell-server/continent/(:any)/(:any)/(:any)/(:any)'] = 'page/set_hostname/$4';
 $route['panel/login'] = 'login/login';
 $route['panel/register'] = 'login/register';
 $route['panel/reseller/(:any)/server'] = 'seller/seller/$1';
